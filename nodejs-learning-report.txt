@@ -1,0 +1,26 @@
+NODEJS LEARNING
+
+Feb 28 - March 5
+Monday Feb 28: 
+1. Learnt Routing in NodeJs
+2. How to read file and write file using nodejs module -file system "fs"
+3. HTML templating
+4. How to create server and listen to server
+
+Tuesday March 1:
+1. Learnt how NodeJs works behind the scene
+2. single thread and how NodeJs implement Asynchronous Javscript
+3. Built small app on routing
+
+Wednesday March 2:
+1. Understanding the event loop
+2. Different types of Modules and exporting
+3. Learnt about streams(Although I will still need to go over this again);
+4. Understanding the "require()" function
+
+Thursday March 3:
+1. Review of promises and using Async/Await to fetch data from API
+2. 
+
+Friday March 4:
+1. 
