@@ -31,6 +31,7 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
+//Get all tours
 app.get('/api/v1/tours', (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -41,6 +42,60 @@ app.get('/api/v1/tours', (req, res) => {
   });
 });
 
+//Get a specific tour by its ID
+app.get('/api/v1/tours/:id', (req, res) => {
+  const id = req.params.id * 1;
+
+  const tour = tours.find((el) => el.id === id);
+
+  if (!tour) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour,
+    },
+  });
+});
+
+//Update tour by its ID
+app.patch('/api/v1/tours/:id', (req, res) => {
+  if (req.params.id > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: 'Updated the tour',
+    },
+  });
+});
+
+//Delete tour by its ID
+app.delete('/api/v1/tours/:id', (req, res) => {
+  if (req.params.id > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  res.status(202).json({
+    status: 'success',
+    data: null,
+  });
+});
+
+//Create a Tour
 app.post('/api/v1/tours', (req, res) => {
   // console.log(req.body);
   const newId = tours[tours.length - 1].id + 1;
