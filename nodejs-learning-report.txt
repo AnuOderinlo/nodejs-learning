@@ -20,7 +20,19 @@ Wednesday March 2:
 
 Thursday March 3:
 1. Review of promises and using Async/Await to fetch data from API
-2. 
+ 
 
 Friday March 4:
 1. 
+
+
+
+
+////////////////////////////
+March 7 - March 14
+Monday March 7:
+1. Learnt Middleware
+    a. How to use 3rd party Middleware
+    b. How to create middleware
+2. Learnt mounting routes
+3. Structuring file(MVC);
