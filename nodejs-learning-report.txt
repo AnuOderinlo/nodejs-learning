@@ -36,3 +36,5 @@ Monday March 7:
     b. How to create middleware
 2. Learnt mounting routes
 3. Structuring file(MVC);
+4. Middleware for parameter(router.param())
+5. Chaining multiple middleware
