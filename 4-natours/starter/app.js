@@ -29,7 +29,11 @@ app.post('/', (req, res) => {
 });
 */
 
-app.use(morgan('dev'));
+console.log(process.env.NODE_ENV);
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 app.use(express.json()); //express.json() is a  middleware, you need it for POST and PUT/PATCH request, you dont need it for GET request
 

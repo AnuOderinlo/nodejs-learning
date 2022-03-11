@@ -23,18 +23,6 @@ Thursday March 3:
  
 
 Friday March 4:
-1. 
+1. I forgot to update
 
 
-
-
-////////////////////////////
-March 7 - March 14
-Monday March 7:
-1. Learnt Middleware
-    a. How to use 3rd party Middleware
-    b. How to create middleware
-2. Learnt mounting routes
-3. Structuring file(MVC);
-4. Middleware for parameter(router.param())
-5. Chaining multiple middleware
