@@ -1,5 +1,6 @@
 const Tour = require('./../model/tourModel');
 
+//ID MIDDLEWARE
 // exports.checkID = (req, res, next, val) => {
 //   console.log(`tour id: ${val}`);
 //   if (req.params.id > tours.length) {
@@ -12,6 +13,7 @@ const Tour = require('./../model/tourModel');
 //   next();
 // };
 
+// BODY MIDDLEWARE
 // exports.checkBody = (req, res, next) => {
 //   if (!req.body.name || !req.body.price) {
 //     return res.status(400).json({
@@ -21,6 +23,14 @@ const Tour = require('./../model/tourModel');
 //   }
 //   next();
 // };
+
+exports.getTopFiveTours = (req, res, next) => {
+  req.query.limit = 5;
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,summary,difficulty,ratingsAverage,price';
+
+  next();
+};
 
 exports.getAllTours = async (req, res) => {
   try {

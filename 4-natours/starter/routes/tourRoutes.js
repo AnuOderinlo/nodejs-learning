@@ -7,6 +7,11 @@ const router = express.Router();
 
 // const checkBody = router.use(tourController.checkBody);
 
+// route for top 5 cheapest tours, creating alias for route
+router
+  .route('/top-five-tours')
+  .get(tourController.getTopFiveTours, tourController.getAllTours);
+
 //Tours
 router
   .route('/')
