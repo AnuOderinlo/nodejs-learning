@@ -29,3 +29,6 @@ Thursday March 10:
 5. Building the model API for natour project
 
 Friday March 11:
+1. Spent a lot of time debugging an error 
+2. Implemented importing json file to the database.
+3. query database with filtering
