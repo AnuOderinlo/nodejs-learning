@@ -12,6 +12,9 @@ router
   .route('/top-five-tours')
   .get(tourController.getTopFiveTours, tourController.getAllTours);
 
+router.route('/tour-stats').get(tourController.getTourStats);
+router.route('/monthly-stats/:year').get(tourController.getMonthlyStats);
+
 //Tours
 router
   .route('/')
