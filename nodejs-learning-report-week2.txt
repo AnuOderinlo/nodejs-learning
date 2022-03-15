@@ -1,34 +1,4 @@
 ////////////////////////////
 March 7 - March 14
 Monday March 7:
-1. Learnt Middleware
-    a. How to use 3rd party Middleware
-    b. How to create middleware
-2. Learnt mounting routes
-3. Structuring file(MVC);
-4. Middleware for parameter(router.param())
-5. Chaining multiple middleware
-6. Node Environment
-
-Tuesday March 8:
-1. Introduction to MongoDb
-2. Using the terminal in CRUD operation in MongoDb
-3. Query methods in MongoDb
-
-Wednesday March 9:
-1. Introduction to Mongoose
-2. Connecting to database Mongo DB using Mongoose
-3. Hosting locally and online
-4. CRUD operation from the app(Express)
-
-Thursday March 10:
-1. Creating Document API with Mongoose
-2. Reading document API with Mongoose
-3. Updating document API with Mongoose
-4. Deleting the a document API with Mongoose
-5. Building the model API for natour project
-
-Friday March 11:
-1. Spent a lot of time debugging an error 
-2. Implemented importing json file to the database.
-3. query database with filtering
+1. 

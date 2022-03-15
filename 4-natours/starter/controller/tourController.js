@@ -1,4 +1,5 @@
 const Tour = require('./../model/tourModel');
+const APIFeatures = require('./../utils/apiFeatures');
 
 //ID MIDDLEWARE
 // exports.checkID = (req, res, next, val) => {
@@ -32,59 +33,14 @@ exports.getTopFiveTours = (req, res, next) => {
   next();
 };
 
+
+
 exports.getAllTours = async (req, res) => {
   try {
-    //1. Build the query
-    const queryObj = { ...req.query };
-    const excludeFields = ['page', 'sort', 'limit', 'fields'];
-
-    excludeFields.forEach((el) => delete queryObj[el]);
-
-    console.log(req.query, queryObj);
-
-    //2. Advance filtering
-    let queryStr = JSON.stringify(queryObj);
-
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-    let query = Tour.find(JSON.parse(queryStr));
-    console.log(JSON.parse(queryStr));
-
-    //3. Sorting
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(',').join(' ');
-      console.log(sortBy);
-      query = query.sort(`${sortBy}`);
-    } else {
-      query = query.sort('createdAt');
-    }
-
-    //4. Selection fields
-    if (req.query.fields) {
-      const fields = req.query.fields.split(',').join(' ');
-      console.log(fields);
-      query = query.select(fields);
-    } else {
-      query = query.select('-__v');
-    }
-
-    // 5. Pagination
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 10;
-    const skip = (page - 1) * limit;
-
-    // page 1 = skip 0, page 2 = skip 10. page 3 = skip 20
-
-    query = query.skip(skip).limit(limit);
-    if (req.query.page) {
-      const totalTour = await Tour.countDocuments();
-      if (skip >= totalTour) {
-        throw new Error("The page doesn't exist");
-      }
-    }
-
+    
     // Execute the query
-    const tours = await query;
+    const features = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate();
+    const tours = await features.query;
 
     // Send Response
     res.status(200).json({
