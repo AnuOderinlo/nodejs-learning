@@ -189,23 +189,17 @@ exports.getMonthlyStats = async (req, res) => {
           tours: { $push: '$name' },
         },
       },
-      {
-        $addFields: { month: '$_id' },
-      },
-      {
-        $project: { _id: 0 },
-      },
-      {
-        $sort: { numTour: -1 },
-      },
       // {
-      //   $match: {
-      //     numTour: {
-      //      $max
-      //     },
-      //   },
+      //   $addFields: { month: '$_id' },
+      // },
+      // {
+      //   $project: { _id: 0 },
+      // },
+      // {
+      //   $sort: { numTour: -1 },
       // },
     ]);
+
     res.status(200).json({
       status: 'success',
       results: plan.length,
