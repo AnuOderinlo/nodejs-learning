@@ -47,7 +47,6 @@ app.use(express.json()); //express.json() is a  middleware, you need it for POST
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(x);
   next();
 });
 
