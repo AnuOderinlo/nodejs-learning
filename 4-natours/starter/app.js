@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`${__dirname}/public`)); //this for static files
 
 // this should be the last middleware in order.
 // this sends an error message if the URL or route is not defined in the app
