@@ -1,5 +1,5 @@
+const crypto = require('crypto');
 const { promisify } = require('util');
-
 const JWT = require('jsonwebtoken');
 const User = require('./../model/userModel');
 const catchAsync = require('./../utils/catchAsync');
@@ -43,6 +43,7 @@ exports.login = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     token,
+    user,
   });
 });
 
@@ -69,8 +70,8 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!currentUser) {
     return next(new AppError('User no longer exist', 401));
   }
-  // 4. check if user changed password after the token was issued
 
+  // 4. check if user changed password after the token was issued
   if (currentUser.changePasswordAfter(decoded.iat)) {
     console.log(decoded.iat);
     return next(new AppError('Password has been changed. Please Log in', 401));
@@ -139,6 +140,63 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   // next();
 });
 
-exports.resetPassword = (req, res, next) => {
-  next();
-};
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  // 1. Get the user with the token
+  const hashToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    passwordResetToken: hashToken,
+    passwordRestExpires: { $gt: Date.now() },
+  });
+
+  // 2. If token has not expired and there is a user
+  if (!user) {
+    return next(new AppError('Token is invalid or has expired!!!', 400));
+  }
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordRestExpires = undefined;
+
+  await user.save();
+
+  const token = siginToken(user._id);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+  });
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  // 1. get the user from collection
+  const user = await User.findById(req.params.id).select('+password');
+  console.log(user._id);
+
+  if (!user) {
+    return next(new AppError('No user found for this ID!', 401));
+  }
+  // 2. Check if Posted current password is correct
+  const { currentPassword, passwordConfirm, newPassword } = req.body;
+
+  if (!(await user.correctPassword(currentPassword, user.password))) {
+    return next(new AppError('Password is not correct', 401));
+  }
+
+  // 3. If so, update the password
+
+  user.password = newPassword;
+  user.passwordConfirm = passwordConfirm;
+  await user.save();
+  // 4. Log in user send JWT(token)
+  // console.log(user._id);
+  const token = siginToken(user._id);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+  });
+});

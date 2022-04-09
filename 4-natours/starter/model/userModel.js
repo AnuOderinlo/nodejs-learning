@@ -61,6 +61,14 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) {
+    return next();
+  }
+  this.passwordChangedAt = Date.now() - 1000; //one second behind the time that the token has been change
+  next();
+});
+
 userSchema.methods.correctPassword = async function (
   inputPassword,
   userPassword
