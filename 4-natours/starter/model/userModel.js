@@ -29,7 +29,7 @@ const userSchema = new Schema({
     type: String,
     required: [true, 'You must have a Password'],
     minlength: 8,
-    select: false,
+    select: false, //don't want it to show in the database
   },
   passwordConfirm: {
     type: String,
@@ -46,6 +46,11 @@ const userSchema = new Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordRestExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
 // Encrypt the password
@@ -66,6 +71,12 @@ userSchema.pre('save', function (next) {
     return next();
   }
   this.passwordChangedAt = Date.now() - 1000; //one second behind the time that the token has been change
+  next();
+});
+
+userSchema.pre('find', function (next) {
+  this.find({ active: { $ne: false } });
+
   next();
 });
 
