@@ -4,7 +4,8 @@ const app = express();
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
 
@@ -53,8 +54,13 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //Body parser, to read data into req.body
-app.use(express.json()); //express.json() is a  middleware, you need it for POST and PUT/PATCH request, you dont need it for GET request
+app.use(express.json({ limit: '10kb' })); //express.json() is a  middleware, you need it for POST and PUT/PATCH request, you dont need it for GET request
 
+//Data sanitization against Nosql injection
+app.use(mongoSanitize());
+
+//Data sanitization against XSS attack
+app.use(xss());
 //Serving static files
 app.use(express.static(`${__dirname}/public`)); //this for static files
 
