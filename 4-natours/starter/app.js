@@ -2,6 +2,7 @@ const express = require('express');
 
 const app = express();
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
@@ -37,6 +38,14 @@ console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3,
+  message: 'Too many request via this IP, please try again after an hour',
+});
+
+app.use('/api', limiter);
 
 app.use(express.json()); //express.json() is a  middleware, you need it for POST and PUT/PATCH request, you dont need it for GET request
 
