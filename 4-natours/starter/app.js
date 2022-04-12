@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
@@ -35,19 +36,27 @@ app.post('/', (req, res) => {
 
 console.log(process.env.NODE_ENV);
 
+//Use to set security HTTPS headers
+app.use(helmet());
+
+// Limit the amount of request from same IP
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 100,
+  message: 'Too many request via this IP, please try again after an hour',
+});
+app.use('/api', limiter);
+
+//Development loggin
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3,
-  message: 'Too many request via this IP, please try again after an hour',
-});
-
-app.use('/api', limiter);
-
+//Body parser, to read data into req.body
 app.use(express.json()); //express.json() is a  middleware, you need it for POST and PUT/PATCH request, you dont need it for GET request
+
+//Serving static files
+app.use(express.static(`${__dirname}/public`)); //this for static files
 
 // app.use((req, res, next) => {
 //   console.log('hello from Middleware');
@@ -61,8 +70,6 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
-
-app.use(express.static(`${__dirname}/public`)); //this for static files
 
 // this should be the last middleware in order.
 // this sends an error message if the URL or route is not defined in the app
