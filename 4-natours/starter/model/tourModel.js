@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const User = require('./userModel');
 
 dotenv.config({ path: `${__dirname}/../config.env` });
 
@@ -83,6 +84,37 @@ const tourSchema = new Schema(
       select: false,
     },
     startDates: [Date],
+    startLocation: {
+      //GeoJson
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    // guides: Array,
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User', // make reference to another mode USER
+      },
+    ],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -91,6 +123,22 @@ tourSchema.virtual('daysInweeks').get(function () {
   return this.duration / 7;
 });
 
+// QUERY MIDDLEWARE
+tourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
+
+  next();
+});
+
+// tourSchema.pre('save', async function (next) {
+//   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
+
+//   this.guides = await Promise.all(guidesPromises);
+//   next();
+// });
 // compile a model
 const Tour = mongoose.model('Tour', tourSchema);
 
