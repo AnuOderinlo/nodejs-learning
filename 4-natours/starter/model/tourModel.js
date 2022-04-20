@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const User = require('./userModel');
+// const User = require('./userModel');
 
 dotenv.config({ path: `${__dirname}/../config.env` });
 
