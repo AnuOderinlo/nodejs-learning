@@ -12,6 +12,7 @@ const globalErrorHandler = require('./controller/errorController');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
 
 /*
 // Create Route
@@ -90,6 +91,7 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 // this should be the last middleware in order.
 // this sends an error message if the URL or route is not defined in the app

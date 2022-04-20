@@ -14,12 +14,12 @@ const reviewSchema = new Schema(
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      required: [true, 'Rewiew must belong to a user'],
+      required: [true, 'Review must belong to a user'],
     },
     tour: {
       type: mongoose.Schema.ObjectId,
       ref: 'Tour',
-      required: [true, 'Rewiew must belong to a tour'],
+      required: [true, 'Review must belong to a tour'],
     },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
@@ -27,4 +27,4 @@ const reviewSchema = new Schema(
 
 const Review = mongoose.model('Review', reviewSchema);
 
-module.exports = Rewiew;
+module.exports = Review;
