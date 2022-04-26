@@ -25,6 +25,19 @@ const reviewSchema = new Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+//Populate
+reviewSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'user',
+    select: 'name',
+  }).populate({
+    path: 'tour',
+    select: 'name',
+  });
+
+  next();
+});
+
 const Review = mongoose.model('Review', reviewSchema);
 
 module.exports = Review;

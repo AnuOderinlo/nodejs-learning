@@ -124,6 +124,7 @@ tourSchema.virtual('daysInweeks').get(function () {
 });
 
 // QUERY MIDDLEWARE
+//Populate
 tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guides',
