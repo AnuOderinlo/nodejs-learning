@@ -147,6 +147,7 @@ tourSchema.pre(/^find/, function (next) {
 //   this.guides = await Promise.all(guidesPromises);
 //   next();
 // });
+
 // compile a model
 const Tour = mongoose.model('Tour', tourSchema);
 
